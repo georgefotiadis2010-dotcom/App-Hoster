@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Catalog — GitHub Pages</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="header-text">
+        <p class="eyebrow">GitHub Pages Catalog</p>
+        <h1>My Projects</h1>
+        <p class="subtitle">
+          Quick launcher for live web apps by
+          <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">@georgefotiadis2010-dotcom</a>.
+        </p>
+      </div>
+
+      <div class="controls">
+        <label class="search-field" for="search-input">
+          <span class="visually-hidden">Filter projects</span>
+          <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
+          </svg>
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Filter projects…"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <kbd class="shortcut-hint" aria-hidden="true">/</kbd>
+        </label>
+        <p class="status-line" id="status-line" aria-live="polite"></p>
+      </div>
+    </header>
+
+    <main>
+      <section class="card-grid" id="project-grid" aria-label="GitHub Pages projects"></section>
+      <p class="empty-state" id="empty-state" hidden>
+        No projects match your search.
+      </p>
+    </main>
+  </div>
+</body>
+</html>
