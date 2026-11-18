@@ -65,11 +65,11 @@ const KNOWN_PROJECTS = [
 ];
 
 const HERO_PALETTES = [
-  ["#8c486e", "#2b1b32"],
-  ["#1d4f8c", "#0e1d36"],
-  ["#176b54", "#0b2823"],
-  ["#523c8c", "#1c1533"],
-  ["#8b3535", "#291216"],
+  ["#a85d87", "#613353"],
+  ["#336ec4", "#183366"],
+  ["#268466", "#114338"],
+  ["#6e52b5", "#2d2057"],
+  ["#b04949", "#4f1e24"],
 ];
 
 const heroStageEl = document.getElementById("hero-stage");
@@ -192,6 +192,7 @@ function updateHeroSlide() {
   heroIndex = ((heroIndex % featured.length) + featured.length) % featured.length;
 
   const current = featured[heroIndex];
+  const prevItem = featured[(heroIndex - 1 + featured.length) % featured.length];
   const nextItem = featured[(heroIndex + 1) % featured.length];
   const [tintA, tintB] = HERO_PALETTES[heroIndex % HERO_PALETTES.length];
   const title = current.title || formatTitle(current.name);
@@ -208,15 +209,18 @@ function updateHeroSlide() {
   if (current.preview) {
     heroBgImg.src = current.preview;
     heroBgImg.hidden = false;
-    floaterLeftImg.src = current.preview;
-    floaterLeftPill.textContent = `${expId} · ${title}`;
   } else {
     heroBgImg.hidden = true;
   }
 
+  if (prevItem?.preview) {
+    floaterLeftImg.src = prevItem.preview;
+    floaterLeftPill.textContent = prevItem.title || formatTitle(prevItem.name);
+  }
+
   if (nextItem?.preview) {
     floaterRightImg.src = nextItem.preview;
-    floaterRightPill.textContent = `Next · ${nextItem.title || formatTitle(nextItem.name)}`;
+    floaterRightPill.textContent = nextItem.title || formatTitle(nextItem.name);
   }
 
   const dots = heroDotsEl.querySelectorAll(".carousel-dot");
