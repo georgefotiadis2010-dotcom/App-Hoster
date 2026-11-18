@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <title>LXG — Live Playgrounds &amp; Web Apps</title>
+  <meta name="color-scheme" content="light">
+  <title>George's Project Catalog</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -12,37 +12,28 @@
   <script src="app.js" defer></script>
 </head>
 <body>
-  <header class="hero-stage" id="hero-stage" aria-label="Featured experiments">
+  <header class="hero-stage" id="hero-stage" aria-label="Featured projects">
     <div class="hero-backdrop" id="hero-backdrop" aria-hidden="true">
       <img class="hero-bg-img" id="hero-bg-img" src="previews/Chamber-Loading.webp" alt="">
       <div class="hero-scrim"></div>
-    </div>
-
-    <div class="hero-floaters" id="hero-floaters" aria-hidden="true">
-      <div class="floater floater-left">
-        <span class="floater-pill" id="floater-left-pill"></span>
-        <img id="floater-left-img" src="previews/Chamber-Loading.webp" alt="">
-      </div>
-      <div class="floater floater-right">
-        <span class="floater-pill" id="floater-right-pill"></span>
-        <img id="floater-right-img" src="previews/LXG-rollout-chcker.webp" alt="">
-      </div>
     </div>
 
     <nav class="lab-nav" aria-label="Primary">
       <a class="nav-brand" href="#hero-stage">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
-            <path d="M5 6.5v11h5.5M12.5 6.5l6.5 11M19 6.5l-6.5 11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="4" y="4" width="7" height="7" rx="2" fill="currentColor"/>
+            <rect x="13" y="4" width="7" height="7" rx="2" fill="currentColor" opacity="0.65"/>
+            <rect x="4" y="13" width="7" height="7" rx="2" fill="currentColor" opacity="0.65"/>
+            <rect x="13" y="13" width="7" height="7" rx="2" fill="currentColor" opacity="0.35"/>
           </svg>
         </span>
-        <span class="brand-name">LXG</span>
-        <span class="brand-badge">Playgrounds</span>
+        <span class="brand-name">George's Project Catalog</span>
       </a>
 
       <div class="nav-links">
-        <a href="#spotlight">Spotlight</a>
-        <a href="#experiments">Experiments</a>
+        <a href="#spotlight">Featured</a>
+        <a href="#projects">Projects</a>
         <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
 
@@ -58,12 +49,12 @@
     </nav>
 
     <div class="hero-center" id="hero-center">
-      <span class="hero-kicker" id="hero-kicker">EXP-01 · GAME</span>
+      <span class="hero-kicker" id="hero-kicker">Game</span>
       <h1 class="hero-title" id="hero-title">Chamber Loading</h1>
       <p class="hero-subtitle" id="hero-subtitle">3D Roguelike Revolver Deckbuilder.</p>
       <div class="hero-cta-row">
         <a class="hero-btn-primary" id="hero-launch" href="https://georgefotiadis2010-dotcom.github.io/Chamber-Loading/" target="_blank" rel="noopener noreferrer">
-          Try it now
+          Open App
         </a>
         <button type="button" class="hero-btn-secondary" id="hero-inspect">
           Preview
@@ -71,41 +62,34 @@
       </div>
     </div>
 
-    <div class="hero-carousel-bar" role="region" aria-label="Featured carousel controls">
-      <button type="button" class="carousel-arrow" id="hero-prev" aria-label="Previous experiment">
+    <div class="hero-carousel-bar" role="region" aria-label="Featured project selector">
+      <button type="button" class="carousel-arrow" id="hero-prev" aria-label="Previous project">
         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M12.5 5 7.5 10l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
 
-      <div class="carousel-dots" id="hero-dots" role="tablist" aria-label="Choose featured experiment"></div>
+      <div class="carousel-dots" id="hero-dots" role="tablist" aria-label="Choose featured project"></div>
 
-      <button type="button" class="carousel-arrow" id="hero-next" aria-label="Next experiment">
+      <button type="button" class="carousel-arrow" id="hero-next" aria-label="Next project">
         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M7.5 5 12.5 10l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-
-      <button type="button" class="carousel-pause" id="hero-pause" aria-label="Pause featured rotation" title="Pause rotation">
-        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <rect x="5.5" y="4.5" width="3" height="11" rx="1"/>
-          <rect x="11.5" y="4.5" width="3" height="11" rx="1"/>
         </svg>
       </button>
     </div>
   </header>
 
   <main>
-    <!-- Section 2: Dark Full-Bleed Spotlight Row -->
+    <!-- Section 2: Featured Dark Cards on White Stage -->
     <section class="spotlight-section" id="spotlight" aria-labelledby="spotlight-heading">
       <div class="section-inner">
         <div class="spotlight-header">
           <div>
-            <p class="section-eyebrow">Featured Playgrounds</p>
-            <h2 id="spotlight-heading">Built to launch in browser</h2>
+            <p class="section-eyebrow">Featured</p>
+            <h2 id="spotlight-heading">Highlighted Projects</h2>
           </div>
-          <a class="spotlight-all-link" href="#experiments">
-            Browse all experiments
+          <a class="spotlight-all-link" href="#projects">
+            View all projects
             <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path d="M4.5 10h11m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -116,8 +100,8 @@
       </div>
     </section>
 
-    <!-- Section 3: Pastel Labs "Be the first to explore" + Search + Tilted Cards -->
-    <section class="playground-section" id="experiments" aria-labelledby="experiments-heading">
+    <!-- Section 3: Pastel Catalog Section + Search + Tilted Cards -->
+    <section class="playground-section" id="projects" aria-labelledby="projects-heading">
       <div class="playground-blobs" aria-hidden="true">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -125,25 +109,25 @@
 
       <div class="section-inner playground-inner">
         <div class="playground-intro">
-          <h2 class="playground-heading" id="experiments-heading">
-            Be the first to <span class="heading-green">explore</span>
+          <h2 class="playground-heading" id="projects-heading">
+            Explore all <span class="heading-green">projects</span>
           </h2>
           <p class="playground-sub">
-            Interactive games, utilities, and live builds by
+            Games, tools, and web apps built by
             <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">@georgefotiadis2010-dotcom</a>.
           </p>
         </div>
 
         <div class="controls" role="search">
           <label class="search-field" for="search-input">
-            <span class="visually-hidden">Filter experiments</span>
+            <span class="visually-hidden">Filter projects</span>
             <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
             </svg>
             <input
               id="search-input"
               type="search"
-              placeholder="Search experiments, games, tools…"
+              placeholder="Search projects, games, tools…"
               autocomplete="off"
               spellcheck="false"
             >
@@ -176,7 +160,7 @@
         <div class="card-grid" id="project-grid" aria-label="Hosted web applications"></div>
 
         <div class="empty-state" id="empty-state" hidden>
-          <p class="empty-title">No matching experiments</p>
+          <p class="empty-title">No matching projects</p>
           <p class="empty-desc">Try clearing your search query or switching to another category.</p>
         </div>
       </div>
@@ -188,7 +172,6 @@
       <div class="dialog-topbar">
         <div class="dialog-heading-group">
           <div class="dialog-badges">
-            <span class="dialog-exp-id" id="dialog-exp-id"></span>
             <span class="dialog-category" id="dialog-category"></span>
           </div>
           <h2 id="dialog-title"></h2>
@@ -206,7 +189,7 @@
       <p class="dialog-desc" id="dialog-desc"></p>
       <div class="dialog-actions">
         <a class="btn-primary" id="dialog-launch" href="#" target="_blank" rel="noopener noreferrer">
-          Try it now
+          Open App
           <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5.5 14.5 14.5 5.5m0 0H7.5m7 0v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>

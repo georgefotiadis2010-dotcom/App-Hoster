@@ -26,7 +26,7 @@ const KNOWN_PROJECTS = [
     preview: "previews/LXG-rollout-chcker.webp",
     pagesUrl: "https://georgefotiadis2010-dotcom.github.io/LXG-rollout-chcker/",
     repoUrl: "https://github.com/georgefotiadis2010-dotcom/LXG-rollout-chcker",
-    description: "LXG rollout checker and release command center.",
+    description: "Release rollout checker and status dashboard.",
     language: "TypeScript",
     updatedAt: "2026-11-13T07:22:33Z",
   },
@@ -74,10 +74,6 @@ const HERO_PALETTES = [
 
 const heroStageEl = document.getElementById("hero-stage");
 const heroBgImg = document.getElementById("hero-bg-img");
-const floaterLeftImg = document.getElementById("floater-left-img");
-const floaterRightImg = document.getElementById("floater-right-img");
-const floaterLeftPill = document.getElementById("floater-left-pill");
-const floaterRightPill = document.getElementById("floater-right-pill");
 const heroKicker = document.getElementById("hero-kicker");
 const heroTitle = document.getElementById("hero-title");
 const heroSubtitle = document.getElementById("hero-subtitle");
@@ -86,7 +82,6 @@ const heroInspect = document.getElementById("hero-inspect");
 const heroDotsEl = document.getElementById("hero-dots");
 const heroPrevBtn = document.getElementById("hero-prev");
 const heroNextBtn = document.getElementById("hero-next");
-const heroPauseBtn = document.getElementById("hero-pause");
 const navSearchBtn = document.getElementById("nav-search-btn");
 
 const spotlightGridEl = document.getElementById("spotlight-grid");
@@ -97,7 +92,6 @@ const searchInput = document.getElementById("search-input");
 const filterPillsEl = document.getElementById("filter-pills");
 
 const previewDialog = document.getElementById("preview-dialog");
-const dialogExpId = document.getElementById("dialog-exp-id");
 const dialogTitle = document.getElementById("dialog-title");
 const dialogCategory = document.getElementById("dialog-category");
 const dialogImg = document.getElementById("dialog-img");
@@ -111,8 +105,6 @@ let allProjects = [...KNOWN_PROJECTS];
 let activeCategory = "all";
 let heroIndex = 0;
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-let isHeroPaused = prefersReducedMotion;
-let heroTimerId = null;
 
 function formatTitle(repoName) {
   return repoName
@@ -129,10 +121,6 @@ function formatDate(isoString) {
     day: "numeric",
     year: "numeric",
   }).format(date);
-}
-
-function formatExpId(index) {
-  return `EXP-${String(index + 1).padStart(2, "0")}`;
 }
 
 function formatHost(url) {
@@ -160,8 +148,17 @@ function createSvgIcon(pathD) {
   return svg;
 }
 
+function preloadFeaturedPreviews() {
+  for (const project of allProjects) {
+    if (project.preview) {
+      const img = new Image();
+      img.src = project.preview;
+    }
+  }
+}
+
 /* =========================================================
-   HERO CAROUSEL
+   HERO CAROUSEL (USER-CONTROLLED, NO AUTO-RELOAD JANK)
    ========================================================= */
 function getFeaturedProjects() {
   return allProjects.slice(0, 5);
@@ -174,13 +171,12 @@ function renderHeroDots(count) {
     dot.type = "button";
     dot.className = "carousel-dot";
     dot.setAttribute("role", "tab");
-    dot.setAttribute("aria-label", `Show featured experiment ${i + 1}`);
+    dot.setAttribute("aria-label", `Show featured project ${i + 1}`);
     dot.setAttribute("aria-selected", String(i === heroIndex));
     if (i === heroIndex) dot.classList.add("is-active");
     dot.addEventListener("click", () => {
       heroIndex = i;
       updateHeroSlide();
-      restartHeroTimer();
     });
     heroDotsEl.appendChild(dot);
   }
@@ -192,35 +188,24 @@ function updateHeroSlide() {
   heroIndex = ((heroIndex % featured.length) + featured.length) % featured.length;
 
   const current = featured[heroIndex];
-  const prevItem = featured[(heroIndex - 1 + featured.length) % featured.length];
-  const nextItem = featured[(heroIndex + 1) % featured.length];
   const [tintA, tintB] = HERO_PALETTES[heroIndex % HERO_PALETTES.length];
   const title = current.title || formatTitle(current.name);
-  const expId = formatExpId(heroIndex);
 
   heroStageEl.style.setProperty("--hero-tint-a", tintA);
   heroStageEl.style.setProperty("--hero-tint-b", tintB);
 
-  heroKicker.textContent = `${expId} · ${(current.category || "Web App").toUpperCase()}`;
+  heroKicker.textContent = current.category || "Web App";
   heroTitle.textContent = title;
-  heroSubtitle.textContent = current.description || "Interactive web experiment.";
+  heroSubtitle.textContent = current.description || "Hosted web application.";
   heroLaunch.href = current.pagesUrl;
 
   if (current.preview) {
-    heroBgImg.src = current.preview;
+    if (heroBgImg.getAttribute("src") !== current.preview) {
+      heroBgImg.src = current.preview;
+    }
     heroBgImg.hidden = false;
   } else {
     heroBgImg.hidden = true;
-  }
-
-  if (prevItem?.preview) {
-    floaterLeftImg.src = prevItem.preview;
-    floaterLeftPill.textContent = prevItem.title || formatTitle(prevItem.name);
-  }
-
-  if (nextItem?.preview) {
-    floaterRightImg.src = nextItem.preview;
-    floaterRightPill.textContent = nextItem.title || formatTitle(nextItem.name);
   }
 
   const dots = heroDotsEl.querySelectorAll(".carousel-dot");
@@ -235,32 +220,8 @@ function updateHeroSlide() {
   }
 }
 
-function updatePauseButtonUI() {
-  heroPauseBtn.setAttribute(
-    "aria-label",
-    isHeroPaused ? "Play featured rotation" : "Pause featured rotation"
-  );
-  heroPauseBtn.title = isHeroPaused ? "Play rotation" : "Pause rotation";
-  heroPauseBtn.innerHTML = isHeroPaused
-    ? '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.5 4.75a.75.75 0 0 1 1.14-.64l8.25 5.25a.75.75 0 0 1 0 1.28l-8.25 5.25A.75.75 0 0 1 6.5 15.25V4.75Z"/></svg>'
-    : '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5.5" y="4.5" width="3" height="11" rx="1"/><rect x="11.5" y="4.5" width="3" height="11" rx="1"/></svg>';
-}
-
-function restartHeroTimer() {
-  if (heroTimerId) {
-    clearInterval(heroTimerId);
-    heroTimerId = null;
-  }
-  if (!isHeroPaused) {
-    heroTimerId = setInterval(() => {
-      heroIndex += 1;
-      updateHeroSlide();
-    }, 6000);
-  }
-}
-
 /* =========================================================
-   SPOTLIGHT ROW (DARK FULL-BLEED CARDS)
+   FEATURED SPOTLIGHT ROW
    ========================================================= */
 function renderSpotlight() {
   const spotlightItems = allProjects.slice(0, 3);
@@ -268,7 +229,6 @@ function renderSpotlight() {
 
   spotlightItems.forEach((project, index) => {
     const title = project.title || formatTitle(project.name);
-    const expId = formatExpId(index);
     const card = document.createElement("article");
     card.className = "spotlight-card";
 
@@ -287,15 +247,17 @@ function renderSpotlight() {
     const topPills = document.createElement("div");
     topPills.className = "spotlight-top-pills";
 
-    const originPill = document.createElement("span");
-    originPill.className = "spotlight-pill";
-    originPill.textContent = project.language ? `${project.language} →` : `${expId} →`;
-
     const catPill = document.createElement("span");
     catPill.className = "spotlight-pill";
     catPill.textContent = project.category || "Web App";
+    topPills.appendChild(catPill);
 
-    topPills.append(originPill, catPill);
+    if (project.language) {
+      const langPill = document.createElement("span");
+      langPill.className = "spotlight-pill";
+      langPill.textContent = project.language;
+      topPills.appendChild(langPill);
+    }
 
     const body = document.createElement("div");
     body.className = "spotlight-body";
@@ -314,18 +276,18 @@ function renderSpotlight() {
     cta.href = project.pagesUrl;
     cta.target = "_blank";
     cta.rel = "noopener noreferrer";
-    cta.textContent = "Try it now";
+    cta.textContent = "Open App";
 
     const inspectBtn = document.createElement("button");
     inspectBtn.type = "button";
     inspectBtn.className = "spotlight-inspect";
-    inspectBtn.setAttribute("aria-label", `Inspect ${title} preview`);
-    inspectBtn.title = "Inspect preview";
+    inspectBtn.setAttribute("aria-label", `Preview ${title}`);
+    inspectBtn.title = "Preview";
     inspectBtn.appendChild(
       createSvgIcon("M12.5 3.5h4v4m0-4-4.75 4.75M7.5 16.5h-4v-4m0 4 4.75-4.75")
     );
     inspectBtn.addEventListener("click", () => {
-      openPreviewDialog(project, expId);
+      openPreviewDialog(project);
     });
 
     actions.append(cta, inspectBtn);
@@ -336,9 +298,9 @@ function renderSpotlight() {
 }
 
 /* =========================================================
-   PLAYGROUND GRID (TILTED CARDS + SEARCH)
+   CATALOG GRID (TILTED CARDS + SEARCH)
    ========================================================= */
-function createPreviewElement(project, index, expId) {
+function createPreviewElement(project) {
   const title = project.title || formatTitle(project.name);
   const category = project.category || "Web App";
   const preview = document.createElement("div");
@@ -347,16 +309,12 @@ function createPreviewElement(project, index, expId) {
   const badges = document.createElement("div");
   badges.className = "preview-badges";
 
-  const expBadge = document.createElement("span");
-  expBadge.className = "preview-exp-id";
-  expBadge.textContent = expId;
-
   const categoryTag = document.createElement("span");
   categoryTag.className = "preview-category";
   categoryTag.dataset.category = category.toLowerCase();
   categoryTag.textContent = category;
 
-  badges.append(expBadge, categoryTag);
+  badges.appendChild(categoryTag);
 
   const showFallback = () => {
     const fallback = document.createElement("div");
@@ -377,15 +335,15 @@ function createPreviewElement(project, index, expId) {
     const expandBtn = document.createElement("button");
     expandBtn.type = "button";
     expandBtn.className = "preview-expand";
-    expandBtn.setAttribute("aria-label", `Inspect ${title} preview`);
-    expandBtn.title = "Inspect preview";
+    expandBtn.setAttribute("aria-label", `Preview ${title}`);
+    expandBtn.title = "Preview";
     expandBtn.appendChild(
       createSvgIcon("M12.5 3.5h4v4m0-4-4.75 4.75M7.5 16.5h-4v-4m0 4 4.75-4.75")
     );
     expandBtn.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
-      openPreviewDialog(project, expId);
+      openPreviewDialog(project);
     });
 
     preview.append(img, badges, expandBtn);
@@ -398,12 +356,8 @@ function createPreviewElement(project, index, expId) {
 
 function renderProjects(filterText = searchInput.value) {
   const query = filterText.trim().toLowerCase();
-  const indexedProjects = allProjects.map((project, idx) => ({
-    project,
-    expId: formatExpId(idx),
-  }));
 
-  const filtered = indexedProjects.filter(({ project }) => {
+  const filtered = allProjects.filter((project) => {
     const matchesCategory =
       activeCategory === "all" ||
       (project.category || "Web App").toLowerCase() === activeCategory.toLowerCase();
@@ -424,11 +378,11 @@ function renderProjects(filterText = searchInput.value) {
 
   gridEl.replaceChildren();
 
-  filtered.forEach(({ project, expId }, index) => {
+  filtered.forEach((project) => {
     const card = document.createElement("article");
     card.className = "card";
 
-    const preview = createPreviewElement(project, index, expId);
+    const preview = createPreviewElement(project);
 
     const header = document.createElement("header");
     header.className = "card-header";
@@ -450,10 +404,10 @@ function renderProjects(filterText = searchInput.value) {
     const footer = document.createElement("footer");
     footer.className = "card-footer";
 
-    const tryLabel = document.createElement("span");
-    tryLabel.className = "try-it-label";
-    tryLabel.setAttribute("aria-hidden", "true");
-    tryLabel.textContent = "Try it now →";
+    const openLabel = document.createElement("span");
+    openLabel.className = "try-it-label";
+    openLabel.setAttribute("aria-hidden", "true");
+    openLabel.textContent = "Open App →";
 
     const rightMeta = document.createElement("div");
     rightMeta.className = "card-meta-right";
@@ -479,7 +433,7 @@ function renderProjects(filterText = searchInput.value) {
       rightMeta.appendChild(repoLink);
     }
 
-    footer.append(tryLabel, rightMeta);
+    footer.append(openLabel, rightMeta);
     card.append(preview, header, desc, footer);
     gridEl.appendChild(card);
   });
@@ -488,16 +442,15 @@ function renderProjects(filterText = searchInput.value) {
   const total = allProjects.length;
   statusEl.textContent =
     query || activeCategory !== "all"
-      ? `${filtered.length} / ${total} experiments`
-      : `${total} live ${total === 1 ? "experiment" : "experiments"}`;
+      ? `${filtered.length} of ${total} projects`
+      : `${total} ${total === 1 ? "project" : "projects"}`;
 }
 
 /* =========================================================
    PREVIEW DIALOG (TOP LAYER)
    ========================================================= */
-function openPreviewDialog(project, expId) {
+function openPreviewDialog(project) {
   const title = project.title || formatTitle(project.name);
-  dialogExpId.textContent = expId;
   dialogTitle.textContent = title;
   dialogCategory.textContent = project.category || "Web App";
   dialogImg.src = project.preview || "";
@@ -569,7 +522,7 @@ async function closeTopLayer(element) {
 }
 
 /* =========================================================
-   GITHUB PAGES AUTO-DISCOVERY
+   GITHUB PAGES AUTO-DISCOVERY (ONLY RE-RENDER IF NEW APPS FOUND)
    ========================================================= */
 async function syncGitHubPages() {
   try {
@@ -581,10 +534,16 @@ async function syncGitHubPages() {
     const repos = await response.json();
     if (!Array.isArray(repos)) return;
 
-    const discovered = repos
+    const knownKeys = new Set(
+      allProjects.map((item) => item.pagesUrl.toLowerCase())
+    );
+
+    const newEntries = repos
       .filter(
         (repo) =>
-          repo.has_pages && repo.name.toLowerCase() !== SELF_REPO_NAME
+          repo.has_pages &&
+          repo.name.toLowerCase() !== SELF_REPO_NAME &&
+          !knownKeys.has(`https://${repo.owner.login.toLowerCase()}.github.io/${repo.name}/`.toLowerCase())
       )
       .map((repo) => ({
         name: repo.name,
@@ -597,25 +556,9 @@ async function syncGitHubPages() {
         updatedAt: repo.updated_at || "",
       }));
 
-    const mergedByUrl = new Map();
-    for (const item of KNOWN_PROJECTS) {
-      mergedByUrl.set(item.pagesUrl.toLowerCase(), item);
-    }
-    for (const item of discovered) {
-      const key = item.pagesUrl.toLowerCase();
-      const existing = mergedByUrl.get(key);
-      mergedByUrl.set(
-        key,
-        existing
-          ? { ...item, ...existing, updatedAt: item.updatedAt || existing.updatedAt }
-          : item
-      );
-    }
+    if (newEntries.length === 0) return;
 
-    allProjects = Array.from(mergedByUrl.values()).sort((a, b) =>
-      (b.updatedAt || "").localeCompare(a.updatedAt || "")
-    );
-
+    allProjects = [...allProjects, ...newEntries];
     renderHeroDots(getFeaturedProjects().length);
     updateHeroSlide();
     renderSpotlight();
@@ -631,31 +574,23 @@ async function syncGitHubPages() {
 heroPrevBtn.addEventListener("click", () => {
   heroIndex -= 1;
   updateHeroSlide();
-  restartHeroTimer();
 });
 
 heroNextBtn.addEventListener("click", () => {
   heroIndex += 1;
   updateHeroSlide();
-  restartHeroTimer();
-});
-
-heroPauseBtn.addEventListener("click", () => {
-  isHeroPaused = !isHeroPaused;
-  updatePauseButtonUI();
-  restartHeroTimer();
 });
 
 heroInspect.addEventListener("click", () => {
   const featured = getFeaturedProjects();
   const current = featured[heroIndex];
   if (current) {
-    openPreviewDialog(current, formatExpId(heroIndex));
+    openPreviewDialog(current);
   }
 });
 
 function jumpToSearch() {
-  document.getElementById("experiments").scrollIntoView({
+  document.getElementById("projects").scrollIntoView({
     behavior: prefersReducedMotion ? "auto" : "smooth",
     block: "start",
   });
@@ -719,8 +654,7 @@ document.addEventListener("keydown", (event) => {
 
 renderHeroDots(getFeaturedProjects().length);
 updateHeroSlide();
-updatePauseButtonUI();
-restartHeroTimer();
+preloadFeaturedPreviews();
 renderSpotlight();
 renderProjects();
 syncGitHubPages();
