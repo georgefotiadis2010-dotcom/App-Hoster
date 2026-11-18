@@ -8,8 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2">
-  <script src="app.js?v=2" defer></script>
+  <link rel="stylesheet" href="styles.css?v=3">
+  <script src="catalog.js?v=3" defer></script>
+  <script src="app.js?v=3" defer></script>
 </head>
 <body>
   <header class="hero-stage" id="hero-stage" aria-label="Featured projects">
@@ -19,7 +20,7 @@
     </div>
 
     <nav class="lab-nav" aria-label="Primary">
-      <a class="nav-brand" href="#hero-stage">
+      <a class="nav-brand" href="index.html">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
             <rect x="4" y="4" width="7" height="7" rx="2" fill="currentColor"/>
@@ -32,34 +33,40 @@
       </a>
 
       <div class="nav-links">
-        <a href="#spotlight">Featured</a>
-        <a href="#projects">Projects</a>
+        <a href="featured.html">Featured</a>
+        <a href="projects.html">Projects</a>
         <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
 
       <div class="nav-actions">
-        <button type="button" class="nav-search-btn" id="nav-search-btn" aria-label="Jump to search">
+        <a class="nav-search-btn" href="projects.html#search-input" aria-label="Go to project search">
           <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
           </svg>
           <span>Search</span>
           <kbd aria-hidden="true">/</kbd>
-        </button>
+        </a>
       </div>
     </nav>
 
-    <div class="hero-center" id="hero-center">
-      <span class="hero-kicker" id="hero-kicker">Game</span>
-      <h1 class="hero-title" id="hero-title">Chamber Loading</h1>
-      <p class="hero-subtitle" id="hero-subtitle">3D Roguelike Revolver Deckbuilder.</p>
-      <div class="hero-cta-row">
-        <a class="hero-btn-primary" id="hero-launch" href="https://georgefotiadis2010-dotcom.github.io/Chamber-Loading/" target="_blank" rel="noopener noreferrer">
-          Open App
-        </a>
-        <button type="button" class="hero-btn-secondary" id="hero-inspect">
-          Preview
-        </button>
+    <div class="hero-showcase">
+      <div class="hero-center" id="hero-center">
+        <span class="hero-kicker" id="hero-kicker">Game</span>
+        <h1 class="hero-title" id="hero-title">Chamber Loading</h1>
+        <p class="hero-subtitle" id="hero-subtitle">3D Roguelike Revolver Deckbuilder.</p>
+        <div class="hero-cta-row">
+          <a class="hero-btn-primary" id="hero-detail-link" href="project.html?id=Chamber-Loading">
+            View Project
+          </a>
+          <a class="hero-btn-secondary" id="hero-launch" href="https://georgefotiadis2010-dotcom.github.io/Chamber-Loading/" target="_blank" rel="noopener noreferrer">
+            Open App ↗
+          </a>
+        </div>
       </div>
+
+      <a class="hero-preview-card" id="hero-preview-link" href="project.html?id=Chamber-Loading" aria-label="View Chamber Loading project page">
+        <img id="hero-preview-img" src="previews/Chamber-Loading.webp" alt="Chamber Loading preview" width="1280" height="800">
+      </a>
     </div>
 
     <div class="hero-carousel-bar" role="region" aria-label="Featured project selector">
@@ -88,7 +95,7 @@
             <p class="section-eyebrow">Featured</p>
             <h2 id="spotlight-heading">Highlighted Projects</h2>
           </div>
-          <a class="spotlight-all-link" href="#projects">
+          <a class="spotlight-all-link" href="projects.html">
             View all projects
             <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path d="M4.5 10h11m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
@@ -166,39 +173,5 @@
       </div>
     </section>
   </main>
-
-  <dialog class="preview-dialog" id="preview-dialog" closedby="any" aria-labelledby="dialog-title">
-    <div class="dialog-shell">
-      <div class="dialog-topbar">
-        <div class="dialog-heading-group">
-          <div class="dialog-badges">
-            <span class="dialog-category" id="dialog-category"></span>
-          </div>
-          <h2 id="dialog-title"></h2>
-        </div>
-        <button type="button" class="dialog-close" id="dialog-close" aria-label="Close preview">
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-      <div class="dialog-media">
-        <img id="dialog-img" src="" alt="" width="1280" height="800">
-      </div>
-      <div class="dialog-meta" id="dialog-meta"></div>
-      <p class="dialog-desc" id="dialog-desc"></p>
-      <div class="dialog-actions">
-        <a class="btn-primary" id="dialog-launch" href="#" target="_blank" rel="noopener noreferrer">
-          Open App
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M5.5 14.5 14.5 5.5m0 0H7.5m7 0v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a class="btn-secondary" id="dialog-repo" href="#" target="_blank" rel="noopener noreferrer">
-          View Source
-        </a>
-      </div>
-    </div>
-  </dialog>
 </body>
 </html>

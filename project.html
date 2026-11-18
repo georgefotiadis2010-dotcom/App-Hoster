@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>Project — George's Project Catalog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=3">
+  <script src="catalog.js?v=3" defer></script>
+  <script src="project-page.js?v=3" defer></script>
+</head>
+<body>
+  <header class="project-hero" id="project-hero">
+    <div class="hero-backdrop" aria-hidden="true">
+      <img class="hero-bg-img" id="project-bg-img" src="" alt="">
+      <div class="hero-scrim"></div>
+    </div>
+
+    <nav class="lab-nav" aria-label="Primary">
+      <a class="nav-brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="4" width="7" height="7" rx="2" fill="currentColor"/>
+            <rect x="13" y="4" width="7" height="7" rx="2" fill="currentColor" opacity="0.65"/>
+            <rect x="4" y="13" width="7" height="7" rx="2" fill="currentColor" opacity="0.65"/>
+            <rect x="13" y="13" width="7" height="7" rx="2" fill="currentColor" opacity="0.35"/>
+          </svg>
+        </span>
+        <span class="brand-name">George's Project Catalog</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="featured.html">Featured</a>
+        <a href="projects.html">Projects</a>
+        <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="nav-search-btn" href="projects.html#search-input" aria-label="Go to project search">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
+          </svg>
+          <span>Search</span>
+          <kbd aria-hidden="true">/</kbd>
+        </a>
+      </div>
+    </nav>
+
+    <div class="section-inner project-hero-inner">
+      <a class="back-link" href="projects.html">← Back to all projects</a>
+      <span class="hero-kicker" id="project-category">Project</span>
+      <h1 class="hero-title" id="project-title">Loading…</h1>
+      <p class="hero-subtitle" id="project-desc"></p>
+      <div class="hero-cta-row">
+        <a class="hero-btn-primary" id="project-launch" href="#" target="_blank" rel="noopener noreferrer">
+          Open App ↗
+        </a>
+        <a class="hero-btn-secondary" id="project-repo" href="#" target="_blank" rel="noopener noreferrer">
+          View Source
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="project-detail-section">
+      <div class="section-inner project-detail-inner">
+        <div class="project-media-frame" id="project-media-frame">
+          <img id="project-preview-img" src="" alt="" width="1280" height="800">
+        </div>
+        <div class="project-specs" id="project-meta"></div>
+      </div>
+    </section>
+
+    <section class="playground-section" aria-labelledby="more-projects-heading">
+      <div class="playground-blobs" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+      </div>
+
+      <div class="section-inner playground-inner">
+        <div class="playground-intro">
+          <h2 class="playground-heading" id="more-projects-heading">
+            More <span class="heading-green">projects</span>
+          </h2>
+        </div>
+
+        <div class="card-grid" id="more-projects-grid" aria-label="More projects"></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

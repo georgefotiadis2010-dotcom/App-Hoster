@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>All Projects — George's Project Catalog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=3">
+  <script src="catalog.js?v=3" defer></script>
+  <script src="app.js?v=3" defer></script>
+</head>
+<body>
+  <header class="subpage-hero subpage-hero-compact" aria-label="All projects">
+    <nav class="lab-nav" aria-label="Primary">
+      <a class="nav-brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="4" width="7" height="7" rx="2" fill="currentColor"/>
+            <rect x="13" y="4" width="7" height="7" rx="2" fill="currentColor" opacity="0.65"/>
+            <rect x="4" y="13" width="7" height="7" rx="2" fill="currentColor" opacity="0.65"/>
+            <rect x="13" y="13" width="7" height="7" rx="2" fill="currentColor" opacity="0.35"/>
+          </svg>
+        </span>
+        <span class="brand-name">George's Project Catalog</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="featured.html">Featured</a>
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="nav-search-btn" href="#search-input" aria-label="Focus search">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
+          </svg>
+          <span>Search</span>
+          <kbd aria-hidden="true">/</kbd>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="playground-section playground-section-full" id="projects" aria-labelledby="projects-heading">
+      <div class="playground-blobs" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+      </div>
+
+      <div class="section-inner playground-inner">
+        <div class="playground-intro">
+          <h1 class="playground-heading" id="projects-heading">
+            Explore all <span class="heading-green">projects</span>
+          </h1>
+          <p class="playground-sub">
+            Search and filter every live web app, game, and tool built by
+            <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">@georgefotiadis2010-dotcom</a>.
+          </p>
+        </div>
+
+        <div class="controls" role="search">
+          <label class="search-field" for="search-input">
+            <span class="visually-hidden">Filter projects</span>
+            <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
+            </svg>
+            <input
+              id="search-input"
+              type="search"
+              placeholder="Search projects, games, tools…"
+              autocomplete="off"
+              spellcheck="false"
+            >
+            <kbd class="shortcut-hint" aria-hidden="true">/</kbd>
+          </label>
+
+          <div class="toolbar-row">
+            <div class="filter-pills" id="filter-pills" role="group" aria-label="Filter by category">
+              <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">
+                <span class="pill-dot pill-dot-all" aria-hidden="true"></span>
+                All
+              </button>
+              <button type="button" class="filter-pill" data-filter="Game" aria-pressed="false">
+                <span class="pill-dot pill-dot-game" aria-hidden="true"></span>
+                Games
+              </button>
+              <button type="button" class="filter-pill" data-filter="Tool" aria-pressed="false">
+                <span class="pill-dot pill-dot-tool" aria-hidden="true"></span>
+                Tools
+              </button>
+              <button type="button" class="filter-pill" data-filter="Fitness" aria-pressed="false">
+                <span class="pill-dot pill-dot-fitness" aria-hidden="true"></span>
+                Fitness
+              </button>
+            </div>
+            <p class="status-line" id="status-line" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="card-grid" id="project-grid" aria-label="Hosted web applications"></div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <p class="empty-title">No matching projects</p>
+          <p class="empty-desc">Try clearing your search query or switching to another category.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

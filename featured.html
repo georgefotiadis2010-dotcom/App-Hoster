@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>Featured Projects — George's Project Catalog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=3">
+  <script src="catalog.js?v=3" defer></script>
+  <script src="app.js?v=3" defer></script>
+</head>
+<body>
+  <header class="subpage-hero" aria-label="Featured projects">
+    <nav class="lab-nav" aria-label="Primary">
+      <a class="nav-brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="4" width="7" height="7" rx="2" fill="currentColor"/>
+            <rect x="13" y="4" width="7" height="7" rx="2" fill="currentColor" opacity="0.65"/>
+            <rect x="4" y="13" width="7" height="7" rx="2" fill="currentColor" opacity="0.65"/>
+            <rect x="13" y="13" width="7" height="7" rx="2" fill="currentColor" opacity="0.35"/>
+          </svg>
+        </span>
+        <span class="brand-name">George's Project Catalog</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="featured.html" aria-current="page">Featured</a>
+        <a href="projects.html">Projects</a>
+        <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="nav-search-btn" href="projects.html#search-input" aria-label="Go to project search">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
+          </svg>
+          <span>Search</span>
+          <kbd aria-hidden="true">/</kbd>
+        </a>
+      </div>
+    </nav>
+
+    <div class="section-inner subpage-header-copy">
+      <p class="subpage-eyebrow">Featured</p>
+      <h1>Highlighted Projects</h1>
+      <p class="subpage-lead">A closer look at the flagship games, tools, and web apps in the catalog.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="spotlight-section" aria-label="Featured project cards">
+      <div class="section-inner">
+        <div class="spotlight-grid" id="spotlight-grid" data-limit="all"></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
