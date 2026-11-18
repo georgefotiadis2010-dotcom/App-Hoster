@@ -12,15 +12,25 @@
   <script src="app.js" defer></script>
 </head>
 <body>
-  <div class="lab-canvas" aria-hidden="true">
-    <div class="lab-dots"></div>
-    <div class="lab-glow lab-glow-blue"></div>
-    <div class="lab-glow lab-glow-green"></div>
-  </div>
+  <header class="hero-stage" id="hero-stage" aria-label="Featured experiments">
+    <div class="hero-backdrop" id="hero-backdrop" aria-hidden="true">
+      <img class="hero-bg-img" id="hero-bg-img" src="previews/Chamber-Loading.webp" alt="">
+      <div class="hero-scrim"></div>
+    </div>
 
-  <div class="page">
-    <nav class="lab-topbar" aria-label="Primary">
-      <div class="brand-lockup">
+    <div class="hero-floaters" id="hero-floaters" aria-hidden="true">
+      <div class="floater floater-left">
+        <span class="floater-pill" id="floater-left-pill"></span>
+        <img id="floater-left-img" src="previews/Chamber-Loading.webp" alt="">
+      </div>
+      <div class="floater floater-right">
+        <span class="floater-pill" id="floater-right-pill"></span>
+        <img id="floater-right-img" src="previews/LXG-rollout-chcker.webp" alt="">
+      </div>
+    </div>
+
+    <nav class="lab-nav" aria-label="Primary">
+      <a class="nav-brand" href="#hero-stage">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
             <circle cx="7" cy="7" r="3" fill="#4285F4"/>
@@ -31,86 +41,150 @@
         </span>
         <span class="brand-name">App Hoster</span>
         <span class="brand-badge">Labs</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#spotlight">Spotlight</a>
+        <a href="#experiments">Experiments</a>
+        <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
 
-      <div class="topbar-meta">
-        <span class="live-pill">
-          <span class="live-dot" aria-hidden="true"></span>
-          <span>Live Playgrounds</span>
-        </span>
-        <a
-          class="profile-chip"
-          href="https://github.com/georgefotiadis2010-dotcom"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M10 2a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.35c-2.23.48-2.7-1.08-2.7-1.08-.36-.93-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.71 1.23 1.87.87 2.33.67.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 10 2Z" clip-rule="evenodd"/>
+      <div class="nav-actions">
+        <button type="button" class="nav-search-btn" id="nav-search-btn" aria-label="Jump to search">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
           </svg>
-          <span>@georgefotiadis2010-dotcom</span>
-        </a>
+          <span>Search</span>
+          <kbd aria-hidden="true">/</kbd>
+        </button>
       </div>
     </nav>
 
-    <header class="site-header">
-      <div class="hero-copy">
-        <p class="eyebrow">Experiments &amp; Interactive Web Apps</p>
-        <h1>
-          Explore <span class="title-accent">live playgrounds</span> &amp; creative builds.
-        </h1>
-        <p class="subtitle">
-          A curated lab of browser games, developer utilities, and interactive tools—ready to launch directly in your browser.
-        </p>
+    <div class="hero-center" id="hero-center">
+      <span class="hero-kicker" id="hero-kicker">EXP-01 · GAME</span>
+      <h1 class="hero-title" id="hero-title">Chamber Loading</h1>
+      <p class="hero-subtitle" id="hero-subtitle">3D Roguelike Revolver Deckbuilder.</p>
+      <div class="hero-cta-row">
+        <a class="hero-btn-primary" id="hero-launch" href="https://georgefotiadis2010-dotcom.github.io/Chamber-Loading/" target="_blank" rel="noopener noreferrer">
+          Try it now
+        </a>
+        <button type="button" class="hero-btn-secondary" id="hero-inspect">
+          Preview
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-carousel-bar" role="region" aria-label="Featured carousel controls">
+      <button type="button" class="carousel-arrow" id="hero-prev" aria-label="Previous experiment">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M12.5 5 7.5 10l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="carousel-dots" id="hero-dots" role="tablist" aria-label="Choose featured experiment"></div>
+
+      <button type="button" class="carousel-arrow" id="hero-next" aria-label="Next experiment">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M7.5 5 12.5 10l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <button type="button" class="carousel-pause" id="hero-pause" aria-label="Pause featured rotation" title="Pause rotation">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <rect x="5.5" y="4.5" width="3" height="11" rx="1"/>
+          <rect x="11.5" y="4.5" width="3" height="11" rx="1"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Section 2: Dark Full-Bleed Spotlight Row -->
+    <section class="spotlight-section" id="spotlight" aria-labelledby="spotlight-heading">
+      <div class="section-inner">
+        <div class="spotlight-header">
+          <div>
+            <p class="section-eyebrow">Featured Playgrounds</p>
+            <h2 id="spotlight-heading">Built to launch in browser</h2>
+          </div>
+          <a class="spotlight-all-link" href="#experiments">
+            Browse all experiments
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4.5 10h11m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="spotlight-grid" id="spotlight-grid"></div>
+      </div>
+    </section>
+
+    <!-- Section 3: Pastel Labs "Be the first to explore" + Search + Tilted Cards -->
+    <section class="playground-section" id="experiments" aria-labelledby="experiments-heading">
+      <div class="playground-blobs" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
       </div>
 
-      <div class="controls" role="search">
-        <label class="search-field" for="search-input">
-          <span class="visually-hidden">Filter experiments</span>
-          <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
-          </svg>
-          <input
-            id="search-input"
-            type="search"
-            placeholder="Search experiments, games, tools…"
-            autocomplete="off"
-            spellcheck="false"
-          >
-          <kbd class="shortcut-hint" aria-hidden="true">/</kbd>
-        </label>
+      <div class="section-inner playground-inner">
+        <div class="playground-intro">
+          <h2 class="playground-heading" id="experiments-heading">
+            Be the first to <span class="heading-green">explore</span>
+          </h2>
+          <p class="playground-sub">
+            Interactive games, utilities, and live builds by
+            <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">@georgefotiadis2010-dotcom</a>.
+          </p>
+        </div>
 
-        <div class="toolbar-row">
-          <div class="filter-pills" id="filter-pills" role="group" aria-label="Filter by category">
-            <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">
-              <span class="pill-dot pill-dot-all" aria-hidden="true"></span>
-              All
-            </button>
-            <button type="button" class="filter-pill" data-filter="Game" aria-pressed="false">
-              <span class="pill-dot pill-dot-game" aria-hidden="true"></span>
-              Games
-            </button>
-            <button type="button" class="filter-pill" data-filter="Tool" aria-pressed="false">
-              <span class="pill-dot pill-dot-tool" aria-hidden="true"></span>
-              Tools
-            </button>
-            <button type="button" class="filter-pill" data-filter="Fitness" aria-pressed="false">
-              <span class="pill-dot pill-dot-fitness" aria-hidden="true"></span>
-              Fitness
-            </button>
+        <div class="controls" role="search">
+          <label class="search-field" for="search-input">
+            <span class="visually-hidden">Filter experiments</span>
+            <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
+            </svg>
+            <input
+              id="search-input"
+              type="search"
+              placeholder="Search experiments, games, tools…"
+              autocomplete="off"
+              spellcheck="false"
+            >
+            <kbd class="shortcut-hint" aria-hidden="true">/</kbd>
+          </label>
+
+          <div class="toolbar-row">
+            <div class="filter-pills" id="filter-pills" role="group" aria-label="Filter by category">
+              <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">
+                <span class="pill-dot pill-dot-all" aria-hidden="true"></span>
+                All
+              </button>
+              <button type="button" class="filter-pill" data-filter="Game" aria-pressed="false">
+                <span class="pill-dot pill-dot-game" aria-hidden="true"></span>
+                Games
+              </button>
+              <button type="button" class="filter-pill" data-filter="Tool" aria-pressed="false">
+                <span class="pill-dot pill-dot-tool" aria-hidden="true"></span>
+                Tools
+              </button>
+              <button type="button" class="filter-pill" data-filter="Fitness" aria-pressed="false">
+                <span class="pill-dot pill-dot-fitness" aria-hidden="true"></span>
+                Fitness
+              </button>
+            </div>
+            <p class="status-line" id="status-line" aria-live="polite"></p>
           </div>
-          <p class="status-line" id="status-line" aria-live="polite"></p>
+        </div>
+
+        <div class="card-grid" id="project-grid" aria-label="Hosted web applications"></div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <p class="empty-title">No matching experiments</p>
+          <p class="empty-desc">Try clearing your search query or switching to another category.</p>
         </div>
       </div>
-    </header>
-
-    <main>
-      <section class="card-grid" id="project-grid" aria-label="Hosted web applications"></section>
-      <div class="empty-state" id="empty-state" hidden>
-        <p class="empty-title">No matching experiments</p>
-        <p class="empty-desc">Try clearing your search query or switching to another category.</p>
-      </div>
-    </main>
-  </div>
+    </section>
+  </main>
 
   <dialog class="preview-dialog" id="preview-dialog" closedby="any" aria-labelledby="dialog-title">
     <div class="dialog-shell">
@@ -135,7 +209,7 @@
       <p class="dialog-desc" id="dialog-desc"></p>
       <div class="dialog-actions">
         <a class="btn-primary" id="dialog-launch" href="#" target="_blank" rel="noopener noreferrer">
-          Open Playground
+          Try it now
           <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5.5 14.5 14.5 5.5m0 0H7.5m7 0v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
