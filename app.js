@@ -71,9 +71,11 @@ const searchInput = document.getElementById("search-input");
 const filterPillsEl = document.getElementById("filter-pills");
 
 const previewDialog = document.getElementById("preview-dialog");
+const dialogExpId = document.getElementById("dialog-exp-id");
 const dialogTitle = document.getElementById("dialog-title");
 const dialogCategory = document.getElementById("dialog-category");
 const dialogImg = document.getElementById("dialog-img");
+const dialogMeta = document.getElementById("dialog-meta");
 const dialogDesc = document.getElementById("dialog-desc");
 const dialogLaunch = document.getElementById("dialog-launch");
 const dialogRepo = document.getElementById("dialog-repo");
@@ -99,6 +101,18 @@ function formatDate(isoString) {
   }).format(date);
 }
 
+function formatExpId(index) {
+  return `EXP-${String(index + 1).padStart(2, "0")}`;
+}
+
+function formatHost(url) {
+  try {
+    return new URL(url).host;
+  } catch {
+    return "";
+  }
+}
+
 function createSvgIcon(pathD) {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("viewBox", "0 0 20 20");
@@ -116,21 +130,32 @@ function createSvgIcon(pathD) {
   return svg;
 }
 
-function createPreviewElement(project, index) {
+function createPreviewElement(project, index, expId) {
   const title = project.title || formatTitle(project.name);
+  const category = project.category || "Web App";
   const preview = document.createElement("div");
   preview.className = "card-preview";
+
+  const badges = document.createElement("div");
+  badges.className = "preview-badges";
+
+  const expBadge = document.createElement("span");
+  expBadge.className = "preview-exp-id";
+  expBadge.textContent = expId;
+
+  const categoryTag = document.createElement("span");
+  categoryTag.className = "preview-category";
+  categoryTag.dataset.category = category.toLowerCase();
+  categoryTag.textContent = category;
+
+  badges.append(expBadge, categoryTag);
 
   const showFallback = () => {
     const fallback = document.createElement("div");
     fallback.className = "preview-fallback";
     fallback.textContent = title;
-    preview.replaceChildren(fallback, categoryTag);
+    preview.replaceChildren(fallback, badges);
   };
-
-  const categoryTag = document.createElement("span");
-  categoryTag.className = "preview-category";
-  categoryTag.textContent = project.category || "Web App";
 
   if (project.preview) {
     const img = document.createElement("img");
@@ -158,10 +183,10 @@ function createPreviewElement(project, index) {
     expandBtn.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
-      openPreviewDialog(project);
+      openPreviewDialog(project, expId);
     });
 
-    preview.append(img, categoryTag, expandBtn);
+    preview.append(img, badges, expandBtn);
   } else {
     showFallback();
   }
@@ -169,14 +194,30 @@ function createPreviewElement(project, index) {
   return preview;
 }
 
-function openPreviewDialog(project) {
+function openPreviewDialog(project, expId) {
   const title = project.title || formatTitle(project.name);
+  dialogExpId.textContent = expId;
   dialogTitle.textContent = title;
   dialogCategory.textContent = project.category || "Web App";
   dialogImg.src = project.preview || "";
   dialogImg.alt = `${title} full preview screenshot`;
   dialogDesc.textContent = project.description || "Hosted web application.";
   dialogLaunch.href = project.pagesUrl;
+
+  const metaItems = [
+    project.language,
+    formatDate(project.updatedAt) ? `Updated ${formatDate(project.updatedAt)}` : "",
+    formatHost(project.pagesUrl),
+  ].filter(Boolean);
+
+  dialogMeta.replaceChildren(
+    ...metaItems.map((label) => {
+      const chip = document.createElement("span");
+      chip.className = "dialog-meta-chip";
+      chip.textContent = label;
+      return chip;
+    })
+  );
 
   if (project.repoUrl) {
     dialogRepo.href = project.repoUrl;
@@ -185,12 +226,55 @@ function openPreviewDialog(project) {
     dialogRepo.hidden = true;
   }
 
+  previewDialog.removeAttribute("data-closing");
   previewDialog.showModal();
+}
+
+let supportsDisplayTransition;
+function canTransitionDisplay() {
+  if (supportsDisplayTransition !== undefined) return supportsDisplayTransition;
+  if (!window.CSS?.supports?.("transition-behavior", "allow-discrete") || !document.body) {
+    return false;
+  }
+  const probe = document.createElement("div");
+  probe.style.cssText = "transition: display 1s allow-discrete !important; display: block;";
+  document.body.appendChild(probe);
+  getComputedStyle(probe).display;
+  probe.style.display = "none";
+  supportsDisplayTransition = getComputedStyle(probe).display === "block";
+  probe.remove();
+  return supportsDisplayTransition;
+}
+
+function supportsTopLayerExit() {
+  return window.CSS?.supports?.("overlay", "auto") && canTransitionDisplay();
+}
+
+async function closeTopLayer(element) {
+  if (!element.open) return;
+  if (!supportsTopLayerExit()) {
+    element.setAttribute("data-closing", "");
+    const animations = element.getAnimations({ subtree: true });
+    if (animations.length > 0) {
+      await Promise.race([
+        Promise.allSettled(animations.map((a) => a.finished)),
+        new Promise((r) => setTimeout(r, 2000)),
+      ]);
+    }
+    if (!element.hasAttribute("data-closing")) return;
+    element.removeAttribute("data-closing");
+  }
+  element.close();
 }
 
 function renderProjects(filterText = searchInput.value) {
   const query = filterText.trim().toLowerCase();
-  const filtered = allProjects.filter((project) => {
+  const indexedProjects = allProjects.map((project, idx) => ({
+    project,
+    expId: formatExpId(idx),
+  }));
+
+  const filtered = indexedProjects.filter(({ project }) => {
     const matchesCategory =
       activeCategory === "all" ||
       (project.category || "Web App").toLowerCase() === activeCategory.toLowerCase();
@@ -211,11 +295,11 @@ function renderProjects(filterText = searchInput.value) {
 
   gridEl.replaceChildren();
 
-  filtered.forEach((project, index) => {
+  filtered.forEach(({ project, expId }, index) => {
     const card = document.createElement("article");
     card.className = "card";
 
-    const preview = createPreviewElement(project, index);
+    const preview = createPreviewElement(project, index, expId);
 
     const header = document.createElement("header");
     header.className = "card-header";
@@ -285,8 +369,8 @@ function renderProjects(filterText = searchInput.value) {
   const total = allProjects.length;
   statusEl.textContent =
     query || activeCategory !== "all"
-      ? `Showing ${filtered.length} of ${total} apps`
-      : `${total} live ${total === 1 ? "app" : "apps"}`;
+      ? `${filtered.length} / ${total} experiments`
+      : `${total} live ${total === 1 ? "experiment" : "experiments"}`;
 }
 
 async function syncGitHubPages() {
@@ -356,14 +440,27 @@ filterPillsEl.addEventListener("click", (event) => {
 });
 
 dialogClose.addEventListener("click", () => {
-  previewDialog.close();
+  closeTopLayer(previewDialog);
 });
 
-previewDialog.addEventListener("click", (event) => {
-  if (event.target === previewDialog) {
-    previewDialog.close();
-  }
+previewDialog.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  closeTopLayer(previewDialog);
 });
+
+if (!("closedBy" in HTMLDialogElement.prototype)) {
+  previewDialog.addEventListener("click", (event) => {
+    if (event.target !== previewDialog) return;
+    const rect = previewDialog.getBoundingClientRect();
+    const isDialogContent =
+      rect.top <= event.clientY &&
+      event.clientY <= rect.top + rect.height &&
+      rect.left <= event.clientX &&
+      event.clientX <= rect.left + rect.width;
+    if (isDialogContent) return;
+    closeTopLayer(previewDialog);
+  });
+}
 
 document.addEventListener("keydown", (event) => {
   if (

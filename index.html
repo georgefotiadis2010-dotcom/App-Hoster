@@ -4,45 +4,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <title>App Hoster — Live Project Arcade</title>
+  <title>App Hoster — Labs &amp; Playgrounds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
 <body>
-  <div class="bg-decor" aria-hidden="true">
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="bg-grid"></div>
+  <div class="lab-canvas" aria-hidden="true">
+    <div class="lab-dots"></div>
+    <div class="lab-glow lab-glow-blue"></div>
+    <div class="lab-glow lab-glow-green"></div>
   </div>
 
   <div class="page">
+    <nav class="lab-topbar" aria-label="Primary">
+      <div class="brand-lockup">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="7" cy="7" r="3" fill="#4285F4"/>
+            <circle cx="17" cy="7" r="3" fill="#EA4335"/>
+            <circle cx="7" cy="17" r="3" fill="#FBBC04"/>
+            <circle cx="17" cy="17" r="3" fill="#34A853"/>
+          </svg>
+        </span>
+        <span class="brand-name">App Hoster</span>
+        <span class="brand-badge">Labs</span>
+      </div>
+
+      <div class="topbar-meta">
+        <span class="live-pill">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span>Live Playgrounds</span>
+        </span>
+        <a
+          class="profile-chip"
+          href="https://github.com/georgefotiadis2010-dotcom"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 2a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.35c-2.23.48-2.7-1.08-2.7-1.08-.36-.93-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.71 1.23 1.87.87 2.33.67.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 10 2Z" clip-rule="evenodd"/>
+          </svg>
+          <span>@georgefotiadis2010-dotcom</span>
+        </a>
+      </div>
+    </nav>
+
     <header class="site-header">
-      <div class="header-text">
-        <div class="eyebrow-row">
-          <span class="live-pill">
-            <span class="live-dot" aria-hidden="true"></span>
-            Live Showcase
-          </span>
-          <span class="eyebrow-sep" aria-hidden="true">/</span>
-          <p class="eyebrow">GitHub Pages &amp; Web Apps</p>
-        </div>
-        <h1>App <span class="title-gradient">Hoster</span></h1>
+      <div class="hero-copy">
+        <p class="eyebrow">Experiments &amp; Interactive Web Apps</p>
+        <h1>
+          Explore <span class="title-accent">live playgrounds</span> &amp; creative builds.
+        </h1>
         <p class="subtitle">
-          Interactive games, creative tools, and web apps built by
-          <a href="https://github.com/georgefotiadis2010-dotcom" target="_blank" rel="noopener noreferrer">@georgefotiadis2010-dotcom</a>.
+          A curated lab of browser games, developer utilities, and interactive tools—ready to launch directly in your browser.
         </p>
       </div>
 
-      <div class="controls">
+      <div class="controls" role="search">
         <label class="search-field" for="search-input">
-          <span class="visually-hidden">Filter projects</span>
+          <span class="visually-hidden">Filter experiments</span>
           <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M8.5 3a5.5 5.5 0 1 0 3.473 9.765l3.631 3.631a.75.75 0 1 0 1.06-1.06l-3.63-3.632A5.5 5.5 0 0 0 8.5 3ZM4.5 8.5a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" fill="currentColor"/>
           </svg>
           <input
             id="search-input"
             type="search"
-            placeholder="Search apps, games, tools…"
+            placeholder="Search experiments, games, tools…"
             autocomplete="off"
             spellcheck="false"
           >
@@ -51,10 +81,22 @@
 
         <div class="toolbar-row">
           <div class="filter-pills" id="filter-pills" role="group" aria-label="Filter by category">
-            <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">All</button>
-            <button type="button" class="filter-pill" data-filter="Game" aria-pressed="false">Games</button>
-            <button type="button" class="filter-pill" data-filter="Tool" aria-pressed="false">Tools</button>
-            <button type="button" class="filter-pill" data-filter="Fitness" aria-pressed="false">Fitness</button>
+            <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">
+              <span class="pill-dot pill-dot-all" aria-hidden="true"></span>
+              All
+            </button>
+            <button type="button" class="filter-pill" data-filter="Game" aria-pressed="false">
+              <span class="pill-dot pill-dot-game" aria-hidden="true"></span>
+              Games
+            </button>
+            <button type="button" class="filter-pill" data-filter="Tool" aria-pressed="false">
+              <span class="pill-dot pill-dot-tool" aria-hidden="true"></span>
+              Tools
+            </button>
+            <button type="button" class="filter-pill" data-filter="Fitness" aria-pressed="false">
+              <span class="pill-dot pill-dot-fitness" aria-hidden="true"></span>
+              Fitness
+            </button>
           </div>
           <p class="status-line" id="status-line" aria-live="polite"></p>
         </div>
@@ -63,17 +105,21 @@
 
     <main>
       <section class="card-grid" id="project-grid" aria-label="Hosted web applications"></section>
-      <p class="empty-state" id="empty-state" hidden>
-        No apps match your filter. Try clearing the search or switching categories.
-      </p>
+      <div class="empty-state" id="empty-state" hidden>
+        <p class="empty-title">No matching experiments</p>
+        <p class="empty-desc">Try clearing your search query or switching to another category.</p>
+      </div>
     </main>
   </div>
 
-  <dialog class="preview-dialog" id="preview-dialog" aria-labelledby="dialog-title">
+  <dialog class="preview-dialog" id="preview-dialog" closedby="any" aria-labelledby="dialog-title">
     <div class="dialog-shell">
       <div class="dialog-topbar">
         <div class="dialog-heading-group">
-          <span class="dialog-category" id="dialog-category"></span>
+          <div class="dialog-badges">
+            <span class="dialog-exp-id" id="dialog-exp-id"></span>
+            <span class="dialog-category" id="dialog-category"></span>
+          </div>
           <h2 id="dialog-title"></h2>
         </div>
         <button type="button" class="dialog-close" id="dialog-close" aria-label="Close preview">
@@ -85,10 +131,11 @@
       <div class="dialog-media">
         <img id="dialog-img" src="" alt="" width="1280" height="800">
       </div>
+      <div class="dialog-meta" id="dialog-meta"></div>
       <p class="dialog-desc" id="dialog-desc"></p>
       <div class="dialog-actions">
         <a class="btn-primary" id="dialog-launch" href="#" target="_blank" rel="noopener noreferrer">
-          Launch App
+          Open Playground
           <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5.5 14.5 14.5 5.5m0 0H7.5m7 0v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
