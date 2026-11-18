@@ -915,19 +915,19 @@ body {
 }
 
 .pill-dot-all {
-  background: linear-gradient(135deg, #4285f4, #34a853);
+  background: linear-gradient(135deg, #1f1f1f, #5f6368);
 }
 
 .pill-dot-game {
-  background: #ea4335;
+  background: #e11d48;
 }
 
 .pill-dot-tool {
-  background: #4285f4;
+  background: #2563eb;
 }
 
 .pill-dot-fitness {
-  background: #34a853;
+  background: #0d9488;
 }
 
 .filter-pill:hover {
