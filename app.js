@@ -184,7 +184,7 @@ function renderSpotlight() {
 
     actions.append(cta, launchIcon);
     body.append(h3, p, actions);
-    card.append(media, topPills, body);
+    card.append(media, topPills, body, createCardBubbles(8));
     spotlightGridEl.appendChild(card);
   });
 }
@@ -310,7 +310,7 @@ function renderProjects(filterText = searchInput ? searchInput.value : "") {
     }
 
     footer.append(viewLabel, rightMeta);
-    card.append(preview, header, desc, footer);
+    card.append(preview, header, desc, footer, createCardBubbles(7));
     gridEl.appendChild(card);
   });
 
